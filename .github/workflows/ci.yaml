@@ -28,6 +28,7 @@ jobs:
           cilium: latest
       - name: Setup Kind
         run: |
+          sudo chmod +x $HOME/.arkade/bin/*
           sudo cp -r $HOME/.arkade/bin/* /usr/local/bin/
 
           # curl -LO https://raw.githubusercontent.com/cilium/cilium/1.13.1/Documentation/installation/kind-config.yaml
@@ -36,8 +37,8 @@ jobs:
         run: |
           cilium install
 
-      - name: Attach SSH
-        uses: self-actuated/connect-ssh@master
+      # - name: Attach SSH
+      #   uses: self-actuated/connect-ssh@master
 
       - name: Cilium quick check
         run: |
@@ -48,17 +49,17 @@ jobs:
         run: |
          cilium status --wait
 
-      - name: Install tetragon
-        run: |
-          EXTRA_HELM_FLAGS="--set teragon.hostProcPath=/procHost" # flags for helm install
-          helm repo add cilium https://helm.cilium.io
-          helm repo update
-          helm install tetragon ${EXTRA_HELM_FLAGS} cilium/tetragon -n kube-system
-          kubectl rollout status -n kube-system ds/tetragon
+      # - name: Install tetragon
+      #   run: |
+      #     EXTRA_HELM_FLAGS="--set teragon.hostProcPath=/procHost" # flags for helm install
+      #     helm repo add cilium https://helm.cilium.io
+      #     helm repo update
+      #     helm install tetragon ${EXTRA_HELM_FLAGS} cilium/tetragon -n kube-system
+      #     kubectl rollout status -n kube-system ds/tetragon
 
-      - name: Run sample app by Tetragon
-        run: |
-          kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.15.0-pre.1/examples/minikube/http-sw-app.yaml
-          kubectl get pods
+      # - name: Run sample app by Tetragon
+      #   run: |
+      #     kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.15.0-pre.1/examples/minikube/http-sw-app.yaml
+      #     kubectl get pods
 
 
