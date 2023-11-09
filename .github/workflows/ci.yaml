@@ -36,8 +36,8 @@ jobs:
         run: |
           cilium install
 
-      - name: Attach SSH
-        uses: self-actuated/connect-ssh@master
+      # - name: Attach SSH
+      #   uses: self-actuated/connect-ssh@master
 
       - name: Cilium quick check
         run: |
