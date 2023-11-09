@@ -1,0 +1,49 @@
+name: cilium-kind
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - master
+
+permissions:
+  id-token: write
+
+jobs:
+  specs:
+    name: cilium-kind
+    runs-on: actuated-arm64-4cpu-8gb
+    # runs-on: actuated-4cpu-8gb
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: alexellis/arkade-get@master
+        with:
+          kind: latest
+          kubectl: latest
+          stern: latest
+          cilium: latest
+      - name: Setup Kind
+        run: |
+          sudo cp -r $HOME/.arkade/bin/* /usr/local/bin/
+
+          curl -LO https://raw.githubusercontent.com/cilium/cilium/1.13.1/Documentation/installation/kind-config.yaml
+          kind create cluster --config=kind-config.yaml
+      - name: Setup Cilium
+        run: |
+          cilium install
+
+      - name: Attach SSH
+        uses: self-actuated/connect-ssh@master
+
+      - name: Cilium quick check
+        run: |
+          kubectl get pods -n kube-system
+          kubectl logs  -n kube-system -l "app.kubernetes.io/name=cilium-agent"
+
+      - name: Cilium full check
+        run: |
+         cilium status --wait
+
