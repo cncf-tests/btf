@@ -15,9 +15,12 @@ permissions:
 jobs:
   specs:
     name: cilium-kind
-    runs-on: actuated-arm64-4cpu-8gb
+    runs-on: [actuated-4cpu-8gb, actuated-dev]
     # runs-on: actuated-4cpu-8gb
     steps:
+
+      - name: Look for btf in sys
+        run: find /sys/kernel/btf
       - uses: actions/checkout@v1
 
       - uses: alexellis/arkade-get@master
