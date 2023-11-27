@@ -43,10 +43,6 @@ jobs:
       # - name: Attach SSH
       #   uses: self-actuated/connect-ssh@master
 
-      - name: Wait for daemonsets in kube-system
-        run: |
-          kubectl rollout status -n kube-system daemonset
-
       - name: Cilium full check
         run: |
          cilium status --wait
