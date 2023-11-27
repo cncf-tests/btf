@@ -46,14 +46,15 @@ jobs:
       - name: Wait for daemonsets in kube-system
         run: |
           kubectl rollout status -n kube-system daemonset
-      - name: Cilium quick check
-        run: |
-          kubectl get pods -n kube-system
-          kubectl logs  -n kube-system -l "app.kubernetes.io/name=cilium-agent"
 
       - name: Cilium full check
         run: |
          cilium status --wait
+
+      - name: Cilium logs check
+        run: |
+          kubectl get pods -n kube-system
+          kubectl logs  -n kube-system -l "app.kubernetes.io/name=cilium-agent" || :
 
       # - name: Install tetragon
       #   run: |
