@@ -40,8 +40,8 @@ jobs:
         run: |
           cilium install
 
-      - name: Attach SSH
-        uses: self-actuated/connect-ssh@master
+      # - name: Attach SSH
+      #   uses: self-actuated/connect-ssh@master
 
       - name: Wait for daemonsets in kube-system
         run: |
