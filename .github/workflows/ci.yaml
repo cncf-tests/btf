@@ -15,7 +15,7 @@ permissions:
 jobs:
   specs:
     name: cilium-kind
-    runs-on: [actuated-arm64-4cpu-8gb, cncf]
+    runs-on: [actuated-arm64-4cpu-8gb, cncf-prod]
     #, actuated-dev]
     # runs-on: actuated-4cpu-8gb
     steps:
